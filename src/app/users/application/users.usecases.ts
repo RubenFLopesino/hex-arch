@@ -10,7 +10,11 @@ export class UsersUseCases {
     return this.userRepo.getAll();
   }
 
-  create(user: User): Observable<User> {
+  create(user: Omit<User, 'id'>): Observable<User> {
     return this.userRepo.create(user);
+  }
+
+  update(id: string, user: Partial<User>): Observable<User | undefined> {
+    return this.userRepo.update(id, user);
   }
 }

@@ -1,5 +1,13 @@
 @if(isLoading()){
 <h1>LOADING</h1>
-} @else {@for (user of users(); track $index) {
-<p>{{ user.name }}</p>
-} }
+} @else {
+<button (click)="createUser()">Crear nuevo usuario</button>
+<ul>
+  @for (user of users(); track $index) {
+  <li>
+    <strong>Name: </strong>{{ user.name }} <strong>Email: </strong
+    >{{ user.email }} <strong>Id: </strong>{{ user.id }}
+  </li>
+  }
+</ul>
+}

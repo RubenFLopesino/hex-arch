@@ -17,4 +17,11 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     this.facade.loadUsers();
   }
+
+  createUser() {
+    this.facade.createUser({
+      name: 'Ruben',
+      email: 'ruben.fernandez@netexlearning.net',
+    });
+  }
 }

@@ -1,6 +1,6 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 
-import { delay, tap } from 'rxjs';
+import { delay, Observable, switchMap, tap } from 'rxjs';
 import { UsersUseCases } from './application/users.usecases';
 import { User } from './domain/user.model';
 
@@ -12,12 +12,25 @@ export class UsersFacade {
 
   private readonly useCases = inject(UsersUseCases);
 
-  loadUsers() {
+  loadUsers(): void {
     this.loadingState.set(true);
     this.useCases
       .getAll()
       .pipe(
         delay(1000),
+        tap((users) => this.usersState.set(users)),
+        tap(() => this.loadingState.set(false))
+      )
+      .subscribe();
+  }
+
+  createUser(user: Omit<User, 'id'>): void {
+    this.loadingState.set(true);
+    this.useCases
+      .create(user)
+      .pipe(
+        delay(1500),
+        switchMap(() => this.useCases.getAll()),
         tap((users) => this.usersState.set(users)),
         tap(() => this.loadingState.set(false))
       )
